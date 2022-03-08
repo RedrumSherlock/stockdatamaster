@@ -54,22 +54,18 @@ def get_trader_performance_metrics(trader):
                 lowest_assets = assets
                 lowest_assets_date = transaction.datetime
 
-        if transaction.datetime.month != previous_month:
-            if transaction.datetime.year != previous_year:
-                previous_month -= 12
-            if transaction.datetime.month != previous_month + 1:
-                raise ValueError("There was one month without any transaction!")
+        while transaction.datetime.month != previous_month:
             monthly_asset_list.append(assets)
-            previous_month = transaction.datetime.month
             monthly_transaction_times_list.append(monthly_transaction_times)
             monthly_transaction_times = 0
+            previous_month = previous_month + 1 if previous_month < 12 else 1
         monthly_transaction_times += 1
 
-        if transaction.datetime.year != previous_year:
-            if transaction.datetime.year != previous_year + 1:
-                raise ValueError("There was one year without any transaction!")
-            annually_asset_list.append(assets)
-            previous_year = transaction.datetime.year
+        if transaction.datetime.year > previous_year:
+            # A new year is detected. Save the asset of the previous year(s) and forward to current year.
+            while transaction.datetime.year != previous_year:
+                annually_asset_list.append(assets)
+                previous_year += 1
 
     sell_buy_ratio_array = np.array(sell_buy_ratio_list)
     sell_buy_ratio_avg = np.mean(sell_buy_ratio_array, axis=0)
