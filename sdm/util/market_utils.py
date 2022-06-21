@@ -6,7 +6,7 @@ from pandas.tseries.holiday import AbstractHolidayCalendar, Holiday, nearest_wor
     USPresidentsDay, GoodFriday, USMemorialDay, USLaborDay, USThanksgivingDay, next_monday
 
 import sdm.constants as c
-from sdm.util.date_utils import trunc_date
+from sdm.util.date_utils import trunc_date, get_current_datetime
 
 
 class USTradingCalendar(AbstractHolidayCalendar):
@@ -85,3 +85,7 @@ def is_open_time(current_time, market):
     start_time = dt.datetime.combine(current_time.date(), dt.time(9, 30, 00))
     end_time = dt.datetime.combine(current_time.date(), dt.time(16, 00, 00))
     return start_time <= current_time <= end_time
+
+
+def is_open_now(market):
+    return is_open_day(get_current_datetime(), market) and is_open_time(get_current_datetime(), market)
