@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='sdmaster',
-    version='1.0.4',
+    version='1.0.5',
     packages=setuptools.find_packages(),
     url='https://github.com/RedrumSherlock/stockdatamaster',
     classifiers=[
