@@ -1,7 +1,7 @@
 import logging
 from collections import OrderedDict
 
-from sdm.util.date_utils import date_to_string
+from sdm.util.date_utils import date_to_string, trunc_today, trunc_date
 from sdm.util.market_utils import is_open_day, USTradingCalendar, CATradingCalendar
 from sdm.util.misc_utils import transpose_dict
 
@@ -95,8 +95,10 @@ class Market:
 
     def forward_one_day(self, today_close_quote=None):
         self.append_data_for_today(today_close_quote)
-        self._current_day += dt.timedelta(days=1)
-        while not is_open_day(self._current_day, self._market_type, self._holidays):
+        if trunc_date(self._current_day) < trunc_today():
+            self._current_day += dt.timedelta(days=1)
+        while not is_open_day(self._current_day, self._market_type, self._holidays) \
+                and trunc_date(self._current_day) < trunc_today():
             self._current_day += dt.timedelta(days=1)
         self.refresh_indicators()
 

@@ -87,5 +87,11 @@ def is_open_time(current_time, market):
     return start_time <= current_time <= end_time
 
 
+def is_after_market_close_now(market):
+    current_time = get_current_datetime()
+    end_time = dt.datetime.combine(current_time.date(), dt.time(16, 00, 00))
+    return is_open_day(get_current_datetime(), market) and current_time > end_time
+
+
 def is_open_now(market):
     return is_open_day(get_current_datetime(), market) and is_open_time(get_current_datetime(), market)
