@@ -94,7 +94,8 @@ class Market:
         return all_transactions
 
     def forward_one_day(self, today_close_quote=None):
-        self.append_data_for_today(today_close_quote)
+        if is_open_day(self._current_day, self._market_type):
+            self.append_data_for_today(today_close_quote)
         if trunc_date(self._current_day) < trunc_today():
             self._current_day += dt.timedelta(days=1)
         while not is_open_day(self._current_day, self._market_type, self._holidays) \
