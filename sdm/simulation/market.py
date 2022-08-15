@@ -84,12 +84,12 @@ class Market:
     def get_traders(self):
         return self._traders
 
-    def make_trades(self, real_time_price=None):
+    def make_trades(self, real_time_price=None, force=False):
         if real_time_price is None:
             self.append_data_for_today()
         all_transactions = []
         for trader in self._traders:
-            transactions = trader.make_trades(self._market_data_cumulative, self._current_day, real_time_price)
+            transactions = trader.make_trades(self._market_data_cumulative, self._current_day, real_time_price, force)
             all_transactions.append(transactions)
         return all_transactions
 
