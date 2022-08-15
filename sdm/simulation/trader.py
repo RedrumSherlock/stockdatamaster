@@ -167,7 +167,14 @@ class Trader:
     def get_total_value(self):
         total_value = self.cash
         for (symbol, holds) in self._position.items():
-            total_value += self._latest_close_price[symbol] * holds
+            if symbol in self._latest_close_price:
+                total_value += self._latest_close_price[symbol] * holds
+            else:
+                # If there is not a latest price, use the last bought price
+                for transaction in reversed(self._transaction_history):
+                    if symbol == transaction.symbol and transaction.is_buy():
+                        total_value += self._latest_close_price[symbol] * holds
+                        break
         return total_value
 
     def plot_performance(self):
