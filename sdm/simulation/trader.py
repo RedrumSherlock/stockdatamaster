@@ -173,7 +173,7 @@ class Trader:
                 # If there is not a latest price, use the last bought price
                 for transaction in reversed(self._transaction_history):
                     if symbol == transaction.symbol and transaction.is_buy():
-                        total_value += self._latest_close_price[symbol] * holds
+                        total_value += transaction.price * holds
                         break
         return total_value
 
