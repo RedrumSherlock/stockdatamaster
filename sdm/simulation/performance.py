@@ -72,6 +72,8 @@ def get_trader_performance_metrics(trader):
     sell_buy_ratio_std = np.std(sell_buy_ratio_array, axis=0)
     profit_probability = sum(profit_list) / len(profit_list)
     hold_days_array = np.array(hold_days_list)
+    hold_days_max = np.max(hold_days_array, axis=0)
+    hold_days_min = np.min(hold_days_array, axis=0)
     hold_days_avg = np.mean(hold_days_array, axis=0)
     hold_days_std = np.std(hold_days_array, axis=0)
     monthly_return_rate_array = np.array(
@@ -104,6 +106,8 @@ def get_trader_performance_metrics(trader):
     logging.info("Lowest Total Asset was {} at Date {}".format(lowest_assets, lowest_assets_date))
     logging.info("Other metrics:")
     logging.info("Average Monthly Transaction Times: {:.2f}".format(monthly_transaction_times_avg))
+    logging.info("Max Hold Days: {:.2f}".format(hold_days_max))
+    logging.info("Min Hold Days: {:.2f}".format(hold_days_min))
     logging.info("Average Hold Days: {:.2f}".format(hold_days_avg))
     logging.info("Standard Deviation of Hold Days: {:.2f}".format(hold_days_std))
     logging.info("Max Gain over single transaction: {:.2f} of symbol {}, bought for {} and sold for {} on {}".format(
