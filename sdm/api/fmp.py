@@ -92,7 +92,7 @@ class FMPAPI(API):
         for quote in raw_response:
             if self._symbol_key in quote:
                 symbol_quote = dict(quote)
-                if self._timestamp_key in symbol_quote:
+                if self._timestamp_key in symbol_quote and symbol_quote[self._timestamp_key] is not None:
                     symbol_quote[c.DATETIME_KEY] = timestamp_to_datetime(symbol_quote[self._timestamp_key])
                     del symbol_quote[self._timestamp_key]
                 del symbol_quote[self._symbol_key]
