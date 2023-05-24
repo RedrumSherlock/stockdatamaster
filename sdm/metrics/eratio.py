@@ -39,8 +39,6 @@ def average_e_ratio(market_data, func, E_RATIO_N, ATR_N=DEFAULT_ATR_DAYS):
     skipped_count = 0
     holidays = CATradingCalendar().holidays(c.EARLIEST_DATE, c.LATEST_DATE)
     for symbol, symbol_prices in market_data.items():
-        if symbol == "PNC-B.TO":
-            continue
         daily_price_list = list(symbol_prices.values())
         dates_list = list(symbol_prices.keys())
         date_gap = False
