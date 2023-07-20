@@ -16,6 +16,7 @@ class FMPAPI(API):
         self._exchange_key = "exchange"
         self._timestamp_key = "timestamp"
         self._previous_close_key = "previousClose"
+        self._type_key = "type"
 
     def get_daily_historical_per_symbol(self, symbol, start_date=c.EARLIEST_DATE, end_date=c.LATEST_DATE):
 
@@ -53,7 +54,8 @@ class FMPAPI(API):
         result = []
         for symbol_item in raw_response:
             if self._symbol_key in symbol_item and \
-                    (self._market == "tsx" or (self._exchange_key in symbol_item
+                    (self._market == "tsx" or (self._type_key in symbol_item and symbol_item[self._type_key] == "stock"
+                                               and self._exchange_key in symbol_item
                                                and symbol_item[self._exchange_key] is not None
                                                and symbol_item[self._exchange_key].lower().startswith(self._market))):
                 result.append(symbol_item[self._symbol_key])
