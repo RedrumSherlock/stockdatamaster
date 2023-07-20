@@ -54,6 +54,7 @@ class FMPAPI(API):
         for symbol_item in raw_response:
             if self._symbol_key in symbol_item and \
                     (self._market == "tsx" or (self._exchange_key in symbol_item
+                                               and symbol_item[self._exchange_key] is not None
                                                and symbol_item[self._exchange_key].lower().startswith(self._market))):
                 result.append(symbol_item[self._symbol_key])
         return list(set(result))
