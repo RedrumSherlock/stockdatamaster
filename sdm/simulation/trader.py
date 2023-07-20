@@ -90,7 +90,7 @@ class Trader:
             return False
         return True
 
-    def make_trades(self, market_data_cumulative, current_day, real_time_price=None, force=False):
+    def make_trades(self, market_data_cumulative, current_day, market_name, real_time_price=None, force=False):
         if current_day < self._current_day:
             raise ValueError("CAN NOT go backwards: Current day for the trader is {} but the date to make trade is {}"
                              .format(date_to_string(self._current_day), date_to_string(current_day)))
@@ -99,7 +99,7 @@ class Trader:
         transactions = self._func(market_data_cumulative=market_data_cumulative, current_day=current_day,
                                   position=self._position, cash=self.cash,
                                   transaction_history=self._transaction_history,
-                                  real_time_price=real_time_price)
+                                  market_name=market_name, real_time_price=real_time_price)
         valid_transactions = []
         for transaction in transactions:
             if real_time_price is not None:
