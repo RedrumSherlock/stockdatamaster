@@ -90,8 +90,9 @@ class FMPAPI(API):
         raw_response = super()._call_url(suffix)
         logging.info("Successfully loaded all {} realtime quotes for market {}".format(len(raw_response), self._market))
         result = {}
+        valid_symbols = self.get_symbol_list_internal()
         for quote in raw_response:
-            if self._symbol_key in quote:
+            if self._symbol_key in quote and quote[self._symbol_key] in valid_symbols:
                 symbol_quote = dict(quote)
                 if self._timestamp_key in symbol_quote and symbol_quote[self._timestamp_key] is not None:
                     symbol_quote[c.DATETIME_KEY] = timestamp_to_datetime(symbol_quote[self._timestamp_key])
