@@ -61,6 +61,20 @@ class Market:
                 len(self._market_data_cumulative[date]) == {}:
             self._market_data_cumulative[date] = data
 
+    def get_first_date_with_data(self):
+        return next(iter(self._market_data_cumulative.keys()))
+
+    def delete_data_for_date(self, date):
+        if date not in self._market_data_cumulative:
+            logging.warning(f"Date {date_to_string(date)} not found in historical prices. No action taken")
+            return
+        first_date = self.get_first_date_with_data()
+        if date != first_date and date != self._current_day:
+            logging.warning(f"You can not delete data for date {date_to_string(date)} as it is not the first date "
+                            f"{date_to_string(first_date)} or last date {date_to_string(self._current_day)}")
+            return
+        del self._market_data_cumulative[date]
+
     def get_today_data(self):
         if self.has_data_for_date(self._current_day):
             return self._market_data_cumulative[self._current_day]
