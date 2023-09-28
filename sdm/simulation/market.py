@@ -74,6 +74,7 @@ class Market:
                             f"{date_to_string(first_date)} or last date {date_to_string(self._current_day)}")
             return
         del self._market_data_cumulative[date]
+        logging.info(f"Deleted data on date {date_to_string(date)}")
 
     def get_today_data(self):
         if self.has_data_for_date(self._current_day):
