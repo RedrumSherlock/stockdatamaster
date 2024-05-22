@@ -38,6 +38,19 @@ class API(ABC):
     def get_url(self, suffix):
         return self._base_url + suffix
 
+    def get_daily_historical_all_bulk(self, date_string):
+        """
+        Return the daily historical data for all symbols in the current market, with a bulk download.
+        :param start_date: Datetime object which defines the start date of the data to request.
+        :param end_date: Datetime object which defines the end date of the data to request.
+        :return: A dict with symbol name as the key. Each item is an OrderedDict object with datetime object as its own
+        key. Each item in this OrderedDict is the stock data of this date as another dict.
+        """
+        symbol_list = self.get_symbol_list()
+        result = self.get_daily_eod_price_all_bulk(date_string)
+        filtered_result = {symbol: data for symbol, data in result.items() if symbol in symbol_list}
+        return filtered_result
+
     def get_daily_historical_all(self, start_date=c.EARLIEST_DATE, end_date=c.LATEST_DATE):
         """
         Return the daily historical data for all symbols in the current market.
@@ -120,9 +133,12 @@ class API(ABC):
         """
         raise NotImplementedError
 
-
     class InvalidSymbolError(Exception):
         """
         Raised when the symbol is not found in FMP
         """
         pass
+
+    @abstractmethod
+    def get_daily_eod_price_all_bulk(self, date_string):
+        raise NotImplementedError

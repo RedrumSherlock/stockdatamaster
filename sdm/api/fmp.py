@@ -118,3 +118,15 @@ class FMPAPI(API):
                     del date_values[self._date_key]
                     result[date] = date_values
         return OrderedDict(sorted(result.items()))
+
+    def get_daily_eod_price_all_bulk(self, date_string):
+        suffix = f"batch-request-end-of-day-prices?date={date_string}&apikey={self._token}"
+        raw_response = super()._call_url(suffix)
+        result = {}
+        for price_entry in raw_response:
+            if "symbol" not in price_entry:
+                continue
+            if "date" not in price_entry or price_entry["date"] != date_string:
+                continue
+            result[price_entry["symbol"]] = {string_to_date(date_string): price_entry}
+        return result
